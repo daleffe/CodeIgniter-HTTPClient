@@ -49,6 +49,13 @@ class Http
     private $headers;
 
     /**
+     * Hold client cookies.
+     *
+     * @var string
+     */
+     private $cookies;
+
+    /**
      * Default cURL options
      *
      * @var array
@@ -75,6 +82,8 @@ class Http
 
         // Must required for get headers and body
         $this->options[CURLOPT_HEADER] = 1;
+
+        $this->cookies = sys_get_temp_dir() . '/cookies.txt';
 	}
 
     /**
@@ -105,6 +114,9 @@ class Http
         $options[CURLOPT_URL] = $url;
         $options[CURLOPT_CUSTOMREQUEST] = strtoupper($type);
         $options[CURLOPT_HTTPHEADER] = $headers;
+
+        $options[CURLOPT_COOKIEFILE] = $this->cookies;
+        $options[CURLOPT_COOKIEJAR] = $this->cookies;
 
         curl_setopt_array($curl, $options);
 
@@ -235,6 +247,16 @@ class Http
         $headers = $this->getHeaders();
 
         return is_array($headers) ? (isset($headers[$key]) ? $headers[$key] : FALSE) : NULL;
+    }
+
+    /**
+     * Get cookies
+     *
+     * @return string
+     */
+    public function getCookies()
+    {
+        return file_exists($this->cookies) ? file_get_contents($this->cookies) : NULL;
     }
 
     /**
