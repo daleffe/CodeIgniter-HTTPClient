@@ -67,7 +67,8 @@ class Http
             CURLOPT_MAXREDIRS      => 10,
             CURLOPT_TIMEOUT        => 30,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSL_VERIFYPEER => false
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_SSL_VERIFYHOST => 0
         ];
 
         $this->options = array_replace($default, $curlOptions);
@@ -84,7 +85,7 @@ class Http
      * @param array     $data          Request data.
      * @param array     $headers       Headers data.
      * @param array     $curlOptions   cURL options.
-     * @return void
+     * @return object
      */
     private function request($type, $url, $data = [], $headers = [], $curlOptions = [])
     {
@@ -267,4 +268,4 @@ class Http
     }
 }
 
-/* End of file HttpClient.php */
+/* End of file Http.php */
