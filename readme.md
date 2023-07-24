@@ -1,37 +1,56 @@
-# Simple HTTP client for PHP
+# CodeIgniter HTTP Client
 
-Install  
-```
-composer require haruncpi/http
-```  
-
-Import class  
+Load library:
 ```php
-use Haruncpi\Http\Http;
+$this->load->library('http');
+```
+... or with configs:
+```php
+$this->load->library('http',[
+  CURLOPT_VERBOSE => 1
+]);
 ```
 
-### GET request
+## How to use
+### GET
 ```php
 $url    = "https://jsonplaceholder.typicode.com/comments";
 $data   = [ 'postId' => 1 ];
 
-$response = HTTP::get( $url, $data );
+$this->http->get($url,$data);
 ```
-### POST request
+### POST
 ```php
 $url    = "https://jsonplaceholder.typicode.com/posts";
 $data   = [ 'title' => 'This is post title' ];
 
-$response = HTTP::post( $url, $data );
+$this->http->post($url,$data);
 ```
 
 ### More options
 ```php
-$response = HTTP::get( $url, $data, $headers, $curlOptions );
-$response = HTTP::post( $url, $data, $headers, $curlOptions );
+$response = $this->http->get($url, $queryString, $headers, $curlOptions);
+$response = $this->http->post($url, $jsonData, $headers, $curlOptions);
+$response = $this->http->put($url, $jsonData, $headers, $curlOptions);
+$response = $this->http->patch($url, $jsonData, $headers, $curlOptions);
+$response = $this->http->delete($url, $headers, $curlOptions);
 ```
 
-### Useful methods
+## Authentication
+* _Basic_
+```php
+$response = $this->http->get("http://url/backend",["server" => "8000"],[],[CURLOPT_USERPWD => "admin:admin"]);
+```
+* _Digest_
+```php
+$response = $this->http->get("http://url/backend",["server" => "8000"],[],[
+  CURLOPT_USERPWD => "admin:admin",
+  CURLOPT_HTTPAUTH, CURLAUTH_DIGEST]);
+```
+
+You can check [other authentication options](https://curl.se/libcurl/c/CURLOPT_HTTPAUTH.html).
+
+## Useful methods
 ```php
 $response->getStatusCode(); // to get response code
 $response->getHeaders(); // to get all headers as array
