@@ -58,4 +58,5 @@ $response->getHeader($name); // to get specific header
 $response->getBody(); // to get raw response body
 $response->getJson(); // to get body as assoc array
 $response->getObject(); // to get body as object
+$response->getCookies() // to get received cookies
 ```
