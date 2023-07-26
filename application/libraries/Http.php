@@ -120,13 +120,19 @@ class Http
 
         curl_setopt_array($curl, $options);
 
-        $response = curl_exec($curl);
+        try {
+            $response = curl_exec($curl);
 
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+            $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
 
-        $this->statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $this->headers = substr($response, 0, $headerSize);
-        $this->body = substr($response, $headerSize);
+            $this->statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $this->headers = substr($response, 0, $headerSize);
+            $this->body = substr($response, $headerSize);
+        } catch (Exception $e) {
+            $this->statusCode = 0;
+            $this->headers = "";
+            $this->body = $e->getMessage();
+        }
 
         curl_close($curl);
 
@@ -274,9 +280,21 @@ class Http
      *
      * @return array|mixed
      */
-    public function getJson()
+    public function getJSON()
     {
         return json_decode($this->getBody(), true);
+    }
+
+    /**
+     * Get response body as XML document.
+     *
+     * @return object
+     */
+    public function getXML()
+    {
+        $xml = new DOMDocument();
+
+        return $xml->loadXml($this->getBody()) ? $xml : NULL;
     }
 
     /**
