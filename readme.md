@@ -45,7 +45,7 @@ $response = $this->http->get("http://url/backend",["server" => "8000"],[],[CURLO
 ```php
 $response = $this->http->get("http://url/backend",["server" => "8000"],[],[
   CURLOPT_USERPWD => "admin:admin",
-  CURLOPT_HTTPAUTH, CURLAUTH_DIGEST]);
+  CURLOPT_HTTPAUTH => CURLAUTH_DIGEST]);
 ```
 
 You can check [other authentication options](https://curl.se/libcurl/c/CURLOPT_HTTPAUTH.html).
